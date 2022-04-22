@@ -1,0 +1,29 @@
+library(caTools)
+library(tidyverse)
+library(MASS)
+library(biotools)
+
+# Cargo los datos
+
+train.data <- read.csv("train.csv", encoding = "UTF-8")
+
+test.data <- read.csv("test.csv", encoding = "UTF-8")
+
+train.data$salario <- as.factor(train.data$salario)
+
+train.data$area <- as.factor(train.data$area)
+
+train.data$se_fue <- as.factor(train.data$se_fue)
+
+test.data$salario <- as.factor(test.data$salario)
+
+test.data$area <- as.factor(test.data$area)
+
+test.data$se_fue <- as.factor(test.data$se_fue)
+
+# Dividimos el data set en training y test sets
+# 
+# split <- sample.split(train.data, SplitRatio = 0.95)
+# 
+# train1 <- subset(train.data, split == TRUE)
+# 
