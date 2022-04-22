@@ -1,0 +1,56 @@
+
+library(caTools)
+library(tidyverse)
+library(MASS)
+library(biotools)
+
+# Cargo los datos
+
+train.data <- read.csv("train.csv", encoding = "UTF-8")
+
+test.data <- read.csv("test.csv", encoding = "UTF-8")
+
+train.data$salario <- as.factor(train.data$salario)
+
+train.data$area <- as.factor(train.data$area)
+
+train.data$se_fue <- as.factor(train.data$se_fue)
+
+test.data$salario <- as.factor(test.data$salario)
+
+test.data$area <- as.factor(test.data$area)
+
+test.data$se_fue <- as.factor(test.data$se_fue)
+
+# Dividimos el data set en training y test sets
+# 
+# split <- sample.split(train.data, SplitRatio = 0.95)
+# 
+# train1 <- subset(train.data, split == TRUE)
+# 
+# test1 <- subset(train.data, split == FALSE)
+# 
+# model_lda <- lda(formula = se_fue ~ nivel_de_satisfaccion + 
+#                    ultima_evaluacion + cantidad_proyectos + 
+#                    promedio_horas_mensuales_trabajadas + anios_en_la_empresa, data = train.data)
+# 
+# pred_train<-predict(model_lda,data=train.data)$class
+# 
+# pred_test<-predict(model_lda, test.data)$class
+
+
+# Linear Discriminant Analysis
+
+model_lda <- lda(formula = se_fue ~ nivel_de_satisfaccion + 
+                 ultima_evaluacion + cantidad_proyectos + 
+                 promedio_horas_mensuales_trabajadas + años_en_la_empresa + tuvo_un_accidente_laboral +
+                 promociones_ultimos_5_anios + area + salario, 
+                 data = train.data)
+
+pred_train<-predict(model_lda,data=train.data)$class
+
+pred_test<-predict(model_lda, test.data)$class
+
+new_data <- cbind(test.data,pred_test)
+
+write.csv(new_data, file = "NewData.csv", fileEncoding = "UTF-8")
